@@ -35,11 +35,32 @@
             border: 1px solid #ddd;
             padding: 10px;
             margin-bottom: 10px;
+            position: relative;
         }
 
         .time {
             font-size: 0.8em;
             color: gray;
+        }
+
+        .delete-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .like-dislike {
+            margin-top: 10px;
+        }
+
+        .like-button, .dislike-button {
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -47,7 +68,7 @@
 <body>
     <div class="container">
         <h1>Microblogging App</h1>
-        <textarea id="postInput" class="post-input" placeholder="What's on your mind?"></textarea>
+        <textarea id="postInput" class="post-input" placeholder="What's on your mind?" maxlength="200"></textarea>
         <button id="postButton" class="post-button">Post</button>
         <div id="posts" class="posts"></div>
     </div>
@@ -64,10 +85,33 @@
                 postDiv.innerHTML = `
                     <div>${message}</div>
                     <div class="time">${time}</div>
+                    <button class="delete-button">Delete</button>
+                    <div class="like-dislike">
+                        <button class="like-button">Like (<span class="like-count">0</span>)</button>
+                        <button class="dislike-button">Dislike (<span class="dislike-count">0</span>)</button>
+                    </div>
                 `;
                 document.getElementById('posts').appendChild(postDiv);
+                
+                postDiv.querySelector('.delete-button').addEventListener('click', function () {
+                    postDiv.remove();
+                });
+
+                postDiv.querySelector('.like-button').addEventListener('click', function () {
+                    var likeCount = postDiv.querySelector('.like-count');
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                });
+
+                postDiv.querySelector('.dislike-button').addEventListener('click', function () {
+                    var dislikeCount = postDiv.querySelector('.dislike-count');
+                    dislikeCount.textContent = parseInt(dislikeCount.textContent) + 1;
+                });
+
                 input.value = '';
             }
         });
     </script>
 </body>
+
+</html>
+
